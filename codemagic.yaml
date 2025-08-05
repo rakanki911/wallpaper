@@ -1,0 +1,30 @@
+workflows:
+  ios-release-build:
+    name: iOS Release Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      vars:
+        BUILD_NAME: "1.0.0"
+        BUILD_NUMBER: "1"
+
+    scripts:
+      - name: Get dependencies
+        script: |
+          flutter pub get
+
+      - name: Build iOS release (.ipa)
+        script: |
+          flutter build ipa --release --no-codesign
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+
+    publishing:
+      email:
+        recipients:
+          - rakanki42@gmail.com
